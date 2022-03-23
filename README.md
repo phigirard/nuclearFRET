@@ -6,5 +6,5 @@ The script generates either the FRET index map of semi-automatically extracted n
 
 Installation
 ------------
-* Download the [python script file](https://github.com/phigirard/nuclearFRET) into your computer
+* Download the [python script file](https://github.com/phigirard/nuclearFRET/blob/main/nuclearFRET.py) into your computer
 * Use File > Open…  to open the script `nuclearFRET.py` in ImageJ/Fiji and click Run on the bottom of the script editor window (you can also go to : Run > Run in the Script Fiji menu)
