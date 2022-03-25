@@ -32,6 +32,7 @@ from ij.plugin import ImageCalculator as IC
 from ij.measure import ResultsTable , Measurements, Calibration
 from ij.plugin.filter import Analyzer
 from ij.plugin.frame import RoiManager
+from ij.text import TextWindow
 
 # Loci Library ------------------------------------------------------------------------------------------
 from loci.formats import ImageReader
@@ -343,6 +344,11 @@ print "STEP 1 : Preparation of data & analysis - Preprocessing"
 # clear the console automatically when not in headless mode
 uiService.getDefaultUI().getConsolePane().clear()
 
+#close Result Table if opened
+if IJ.isResultsWindow() :
+	IJ.run("Clear Results", "")
+	tw = ResultsTable().getResultsWindow()
+	tw.close()
 
 #convert Files from #@ parameters to String 
 imagefile = inputFile.getCanonicalPath()
@@ -489,6 +495,7 @@ else :
 	#Select the periphery of the nuclei
 	print "Select the periphery of the nuclei"
 	rmNuclei = RoiManager(showRoiManager)
+	rmNucleiOut = RoiManager(showRoiManager)
 	L2R(impLabel, rmNuclei)
 	count = rmNuclei.getCount() 
 	rt = ResultsTable()
@@ -498,8 +505,9 @@ else :
 	for idx in range(count): 
 		roi0 = rmNuclei.getRoi(idx)
 		FintPol = roi0.getInterpolatedPolygon(-1, True) 
-		if FintPol.npoints > 10 : # exclude ROI with nb of coutour points 
-			rmNuclei.addRoi(PolygonRoi(FintPol, Roi.POLYGON))
+		if FintPol.npoints > 10 : # exclude ROI with nb of coutour points < 10
+			polyroi0 = PolygonRoi(FintPol, Roi.POLYGON)
+			rmNuclei.addRoi(polyroi0)
 			Fpts = Polygon2Points(FintPol)
 			FptsSize = len(Fpts)
 			for ipts in range(FptsSize) :
@@ -513,9 +521,10 @@ else :
 				rt.addValue("PointY", Ypts)
 				rt.addValue(FRETTitle, ipFRET.getPixelValue(int(Xpts), int(Ypts)) )
 		
-			roiPlus = RoiEnlarger.enlarge(roi0, 2)
-			roiMinus = RoiEnlarger.enlarge(roi0, -1)
-			notRoi = ShapeRoi(roiPlus).xor(ShapeRoi(roiMinus))
+			roiOUT = RoiEnlarger.enlarge(polyroi0, 2)
+			rmNucleiOut.addRoi(roiOUT)
+			roiIN = RoiEnlarger.enlarge(polyroi0, -1)
+			notRoi = ShapeRoi(roiOUT).xor(ShapeRoi(roiIN))
 			rmContour.addRoi(notRoi)
 	rmNuclei.setSelectedIndexes(range(count))
 	rmNuclei.runCommand(impLabel,"Delete")
@@ -532,15 +541,15 @@ else :
 
 	#### STEP 4 :  FRET index of segmented nuclei
 	print 'STEP 4 : FRET index of segmented nuclei'
-
+	
+	rt.reset()	
 	Analyzer.setMeasurements (Measurements.AREA+ Measurements.MEAN +Measurements.STD_DEV + Measurements.SHAPE_DESCRIPTORS) 
-	rt.reset()
-	Analyzer.setResultsTable(rt)
-	rmContour.runCommand(impFRET,"Measure")
+	rmNucleiOut.runCommand(impFRET,"Measure")
+	rt = Analyzer.getResultsTable()
 	rt.saveAs(os.path.join(impFolder,"MeanFRETMeasurements.csv")) #save the measurement table
 	IJ.renameResults("Mean FRET index (%)")
 	rmContour.runCommand("Deselect") # deselect ROIs to save them all
-	rmContour.runCommand("Save", os.path.join(impFolder, "RoiSet_NucleiBand.zip")) #save the nuclei band
+	rmContour.runCommand("Save", os.path.join(impFolder, "RoiSet_NuclearBand.zip")) #save the nuclei band
 	rmContour.setSelectedIndexes(range(rmContour.getCount()))
 	rmContour.runCommand(impFRET,"Combine")
 	allRoi = impFRET.getRoi()
