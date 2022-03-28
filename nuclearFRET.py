@@ -1,3 +1,16 @@
+#*******************************************************************************
+#                                                                             
+#	Philippe GIRARD 
+# 	Université Paris Cité, CNRS, Institut Jacques Monod, F-75013 Paris, France
+#
+# 	nuclearFRET.py
+#	Release v1.0
+#
+#	Copyright 2022 - AGPL-3.0 License
+#                                                                             
+#******************************************************************************/
+
+
 #@ File(label="LSM Multidimensional file", description="Select a Hyperstack CTZ-(Series or not) file ", style="file") inputFile
 #@ String (label="Type of FRET analysis", description="Select the object to analyze ", choices={"Nuclei", "Whole cell"}, style="radioButtonHorizontal") FRETtype
 #@ Boolean(label="Choose values for background subtraction", description="Values for background subtraction",value=False, persist=True) backgroundSubtract
@@ -465,9 +478,7 @@ else :
 			bp.fill(OvalRoi(x-2, y-2, 5, 5))
 	impMarker = ImagePlus("Marker Image", bp) 
 	impMarker = BinaryImages.componentsLabeling(impMarker, 8, 32)
-	#IJ.saveAs(impMarker, "TIFF",os.path.join(impFolder, "Marker.tif"))
 	impLabel = Watershed.computeWatershed(impProj, impMarker, None, 8, True )
-	#IJ.saveAs(impLabel, "TIFF",os.path.join(impFolder, "Label.tif"))
 	lutName = CommonLabelMaps.JET.getLabel()
 	lut = CommonLabelMaps.fromLabel(lutName).computeLut(255, True)    	
 	impLabelRGB = LabelImages.labelToRgb(impLabel, lut ,Color.BLACK)
@@ -486,7 +497,6 @@ else :
 	impLabelRGB.deleteRoi()
 	LabelImages.removeBorderLabels(impLabel) 
 	impLabelRGB = LabelImages.labelToRgb(impLabel, lut ,Color.WHITE)
-	#IJ.saveAs(impLabel, "TIFF",os.path.join(impFolder, "LabelBorders.tif"))
 	IJ.saveAs(impLabelRGB, "TIFF",os.path.join(impFolder, "LabelBordersRGB.tif"))
 	rmMarker.runCommand("Deselect") # deselect ROIs to save them all
 	rmMarker.runCommand("Save", os.path.join(impFolder, "RoiSet_Markers.zip")) #save the Rois
