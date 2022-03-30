@@ -1,6 +1,6 @@
 # nuclearFRET
 an [ImageJ](http://imagej.net/Welcome)/[Fiji](https://fiji.sc) python script for [FRET](https://en.wikipedia.org/wiki/Förster_resonance_energy_transfer) (Förster Resonance Energy Transfer) calculation at the nuclear envelope or in the cytoplasm for FRET standard constructs.
-This protocol is derived from a previously published work: [Déjardin *et al.*, *J Cell Biol* (2020) 219 (10): e201908036](https://doi.org/10.1083/jcb.201908036).
+This analysis is derived from a previously published work: [Déjardin *et al.*, *J Cell Biol* (2020) 219 (10): e201908036](https://doi.org/10.1083/jcb.201908036).
 
 
 The script generates either the FRET index map of semi-automatically extracted nuclear envelopes from nuclei and a list of mean FRET index per nucleus ([**Nuclei workflow**](#nuclei-workflow)), or the FRET index map of FRET standard constructs 5AA and TRAF expressed in the cytoplasm ([**Whole cell workflow**](#whole-cell-workflow)).  
