@@ -1,20 +1,20 @@
 # nuclearFRET
 an [ImageJ](http://imagej.net/Welcome)/[Fiji](https://fiji.sc) python script for [FRET](https://en.wikipedia.org/wiki/Förster_resonance_energy_transfer) (Förster Resonance Energy Transfer) calculation at the nuclear envelope or in the cytoplasm for FRET standard constructs.
 
-The script generates either the FRET index map of semi-automatically extracted nuclear envelopes from nuclei and a list of mean FRET index per nucleus (Nuclei workflow), or the FRET index map of FRET standard constructs 5AA and TRAF expressed in the cytoplasm (Whole cell workflow).  
+The script generates either the FRET index map of semi-automatically extracted nuclear envelopes from nuclei and a list of mean FRET index per nucleus ([**Nuclei workflow**](#nuclei-workflow)), or the FRET index map of FRET standard constructs 5AA and TRAF expressed in the cytoplasm ([**Whole cell workflow**](#whole-cell-workflow)).  
 
 
-Installation
-------------
+## Installation
+
 * Download the [python script file](https://github.com/phigirard/nuclearFRET/blob/main/nuclearFRET.py) into your computer.
 * Use File > Open…  to open the script `nuclearFRET.py` in ImageJ/Fiji.
 * Click Run on the bottom of the script editor window (you can also go to : Run > Run in the Script Fiji menu). <br><p align="center"><img src="./images/Fig1.png" width="700"></p><br>
 
 
-Nuclei workflow
-------------
+## Nuclei workflow
+
 1.	In the dialog box :
-	* 	select the multichannel ZEISS .lsm or .czi file you wish to analyze,
+	* 	select the multichannel ZEISS .lsm or .czi file (it is also working for multi-tif file) you wish to analyze,
 	*  select one of the two image analysis workflows: [*Nuclei*] option to analyze the signal from nuclear envelope,
 	*  select [*Choose values for background subtraction*] if you want to subtract the background intensity levels by inserting manually the background values in the corresponding Donor/Acceptor channel numeric fields. This option will bypass the background measurement from a ROI (Region Of Interest) in the acquired images (step 4).<br><p align="center"><img src="./images/Fig2.png" width="500"></p><br>
 2.	The script opens the file and checks its dimension. If the number of Z-slices or frames is >1 (Z or T >1) or if there is only one channel (C=1), the script will abort and warn the user. If the file contains multiple positions, select with the slider in the popup window the serie you want to analyze. The script creates a folder with the name *filename(without extension)_Sselected series number* to store all the analyzed data files (images and result tables).
@@ -29,10 +29,10 @@ Nuclei workflow
 	-	a Result Table called 'Mean FRET index (%)' with, for each nucleus, its area (in the physical unit of the original image), the mean FRET index (in %) and the standard deviation measured in the nuclear band, the shape descriptors (circularity, aspect ratio, roundnessand solidity) of the nucleus contour. This table is saved as `MeanFRETMeasurements.csv`. <br><p align="center"><img src="./images/Fig17.png" height="500"></p><br>
 
 
-Whole cell workflow
-------------
+## Whole cell workflow
+
 1.	In the dialog box :
-	* 	select the multichannel ZEISS .lsm or .czi file you wish to analyze,
+	*  select the multichannel ZEISS .lsm or .czi file (it is also working for multi-tif file) you wish to analyze,
 	*  select one of the two image analysis workflows: [*Whole cell*] option to analyze the signal from the cytoplasm,
 	*  select [*Choose values for background subtraction*] if you want to subtract the background intensity levels by inserting manually the background values in the corresponding Donor/Acceptor channel numeric fields. This option will bypass the background measurement from a ROI (Region Of Interest) in the acquired images (step 4).<br><p align="center"><img src="./images/Fig18.png" width="500"></p><br>
 2.	The script opens the file and checks its dimension. If the number of Z-slices or frames is >1 (Z or T >1) or if there is only one channel (C=1), the script will abort and warn the user. If the file contains multiple positions, select with the slider in the popup window the serie you want to analyze. The script creates a folder with the name *filename(without extension)_Sselected series number* to store all the analyzed data files (images and result tables).
