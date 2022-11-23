@@ -6,7 +6,7 @@ This analysis is derived from a previously published work: [Déjardin *et al.*, 
 The script generates either the FRET index map of semi-automatically extracted nuclear envelopes from nuclei and a list of mean FRET index per nucleus ([**Nuclei workflow**](#nuclei-workflow)), or the FRET index map of FRET standard constructs 5AA and TRAF expressed in the cytoplasm ([**Whole cell workflow**](#whole-cell-workflow)).  
 
 ## License
-The nuclearFRET runs under the [GNU Affero General Public License v3.0](https://opensource.org/licenses/BSD-3-Clause)
+The nuclearFRET runs under the  [BSD-3 License](https://opensource.org/licenses/BSD-3-Clause)
 
 
 ## Installation
