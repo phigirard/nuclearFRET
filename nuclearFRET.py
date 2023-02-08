@@ -291,16 +291,26 @@ def removeSaturatedPixels(imp_):
 	IJ.run(imp_, "NaN Background", "")	
 	return
 
+def applyThreshold(imp_, minthres_, maxthres_):
+	IJ.setRawThreshold(imp_, minthres_, maxthres_, "Black & White")
+	if imp_.getStackSize() > 1 :
+		IJ.run(imp_, "NaN Background", "stack")	
+		IJ.run(imp_, "Despeckle", "stack")
+	else :
+		IJ.run(imp_, "NaN Background", "")	
+		IJ.run(imp_, "Despeckle", "")
+	return 
+
 # Computation of the fret index
 def CalculationFRETIndex(impD_,impA_, threshold):
 	if threshold :
-		impMask = impA_.duplicate()
 		#Select the good threshold in the Acceptor image and threshold with NAN background
 		#if not Autothreshold.MaxEntropy method is used
-		thresholdImageUI(impMask)
-		## Apply Mask to Donnor and Acceptor
-		IC().run("Multiply", impD_,impMask)
-		IC().run("Multiply", impA_,impMask)
+		impMask = impA_.duplicate()
+		thres_min, thres_max = thresholdImageUI(impMask)
+		impMask.close()
+		applyThreshold(impDonnor, thres_min, thres_max)
+		applyThreshold(impAcceptor, thres_min, thres_max)
 
 	impD_ = IC().run("Add create 32-bit", impD_,impA_)#------- 1) image Donnor+Acceptor -> Denominator
 	IJ.setRawThreshold(impD_,1,Float.MAX_VALUE, None) # remove 0-value pixels to exclude infinity value in the  divide calculation
